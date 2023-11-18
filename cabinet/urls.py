@@ -10,5 +10,6 @@ urlpatterns = [
     path('application/create/', ApplicationCreateView.as_view(template_name="application_create.html"),
          name="create_application"),
     path('profile/', ProfileView.as_view(template_name="profile.html"), name="profile"),
+    path("profile/filter/", FilterProfileView.as_view(template_name="profile.html"), name='profile-filter'),
 
 ]

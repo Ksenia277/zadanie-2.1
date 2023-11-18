@@ -3,6 +3,21 @@
 <h3>Профиль пользователя</h3>
 <h4>Здравствуйте, {{ request.user.first_name }}!</h4>
 
+<form action="{% url 'profile-filter' %}" method="get" name="filter">
+  <h3>Статус заявки:</h3>
+    <div>
+        <select name="status">
+            <option value="Н">Новая</option>
+            <option value="П">Принято в работу</option>
+            <option value="В">Выполнено</option>
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Найти</button>
+</form>
+<br>
+<a href="{% url 'profile' %}" class="btn btn-primary">Показать все</a>
+<br>
 <p>Ваши заявки:</p>
 <ul>
     {% for application in application_list %}
@@ -11,7 +26,6 @@
       <li>Описание заявки: {{ application.description }}</li>
       <li>Категория заявки: {{ application.category }}</li>
       <li>Статус заявки: {{ application.get_status_display }}</li>
-
       <p>-----------------------------------------</p>
     {% endfor %}
 </ul>

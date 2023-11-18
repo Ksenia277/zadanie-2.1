@@ -10,7 +10,10 @@ from .forms import *
 # домашняя
 class HomeView(TemplateView):
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, locals())
+        applications = Application.objects.filter(status='В').order_by('-created')[:4]
+        applications_count = Application.objects.filter(status='П').count()
+        context = {'applications': applications, 'applications_count': applications_count}
+        return render(request, self.template_name, context)
 
 # регистрация
 class RegisterView(TemplateView):
@@ -84,5 +87,12 @@ class ApplicationCreateView(TemplateView, LoginRequiredMixin):
 class ProfileView(TemplateView, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         applications = Application.objects.filter(applicant=request.user).order_by('-created')
+        context = {'application_list': applications}
+        return render(request, self.template_name, context)
+
+class FilterProfileView(TemplateView, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        applications = Application.objects.filter(
+            applicant=self.request.user, status=self.request.GET.get('status')[0]).order_by('-created')
         context = {'application_list': applications}
         return render(request, self.template_name, context)
