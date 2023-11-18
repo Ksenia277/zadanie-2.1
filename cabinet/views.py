@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
@@ -62,3 +63,26 @@ class LogoutView(TemplateView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect("/")
+
+class ApplicationCreateView(TemplateView, LoginRequiredMixin):
+    form_class = ApplicationForm
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(None)
+        return render(request, self.template_name, locals())
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+
+        if form.is_valid():  # проверяем форму регистрации
+            instance = form.save(commit=False)
+            instance.applicant = request.user
+            instance.save()
+            return redirect('profile')
+
+        return render(request, self.template_name, locals())
+
+class ProfileView(TemplateView, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        applications = Application.objects.filter(applicant=request.user).order_by('-created')
+        context = {'application_list': applications}
+        return render(request, self.template_name, context)

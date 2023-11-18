@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django import forms
 
+from cabinet.models import Application
+
+
 class ConfirmField(forms.Field):
     def validate(self, value):
         super(ConfirmField, self).validate(value)
@@ -38,3 +41,28 @@ class UserForm(forms.ModelForm):
                 "ФИО должно содержать только кириллические буквы, дефис и пробелы"
             )
         return first_name
+
+class ApplicationForm(forms.ModelForm):
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        image_size = image.size
+        str_file = str(image)
+        if str_file.endswith('.jpg') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.jpeg') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.png') and image_size <= 2097152:
+            return image
+        elif str_file.endswith('.bpm') and image_size <= 2097152:
+            return image
+        else:
+            raise forms.ValidationError(
+                "Ошибка: "
+                "Файл должен иметь формат: jpg, jpeg, png, bmp и размер не более 2МБ"
+            )
+        return file
+
+    class Meta:
+        model = Application
+        fields = ('title', 'description', 'category', 'image', )

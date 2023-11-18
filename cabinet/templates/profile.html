@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Профиль пользователя</h3>
+<h4>Здравствуйте, {{ request.user.first_name }}!</h4>
+
+<p>Ваши заявки:</p>
+<ul>
+    {% for application in application_list %}
+      <li>Временная метка: {{ application.created }}</li>
+      <li>Название заявки: {{ application.title }}</li>
+      <li>Описание заявки: {{ application.description }}</li>
+      <li>Категория заявки: {{ application.category }}</li>
+      <li>Статус заявки: {{ application.get_status_display }}</li>
+
+      <p>-----------------------------------------</p>
+    {% endfor %}
+</ul>
+{% endblock %}
