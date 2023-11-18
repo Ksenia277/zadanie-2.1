@@ -96,3 +96,17 @@ class FilterProfileView(TemplateView, LoginRequiredMixin):
             applicant=self.request.user, status=self.request.GET.get('status')[0]).order_by('-created')
         context = {'application_list': applications}
         return render(request, self.template_name, context)
+
+class ApplicationDeleteView(TemplateView, LoginRequiredMixin):
+    success_url = reverse_lazy('application_delete_confirm')
+
+    def get(self, request, pk, *args, **kwargs):
+        application = Application.objects.get(id=pk)
+        if application.status == 'Н':
+            return render(request, self.template_name, locals())
+
+class ApplicationDeleteConfirmView(TemplateView, LoginRequiredMixin):
+    def get(self, request, pk, *args, **kwargs):
+        application = Application.objects.get(id=pk)
+        application.delete()
+        return redirect('profile')

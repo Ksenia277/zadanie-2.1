@@ -11,5 +11,9 @@ urlpatterns = [
          name="create_application"),
     path('profile/', ProfileView.as_view(template_name="profile.html"), name="profile"),
     path("profile/filter/", FilterProfileView.as_view(template_name="profile.html"), name='profile-filter'),
-
+    path('application/delete/<int:pk>', ApplicationDeleteView.as_view(template_name="application_delete.html"),
+         name="application_delete"),
+    path('application/delete/confirm/<int:pk>',
+         ApplicationDeleteConfirmView.as_view(template_name="application_delete.html"),
+         name="application_delete_confirm"),
 ]

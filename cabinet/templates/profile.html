@@ -26,6 +26,13 @@
       <li>Описание заявки: {{ application.description }}</li>
       <li>Категория заявки: {{ application.category }}</li>
       <li>Статус заявки: {{ application.get_status_display }}</li>
+        {% if application.status == 'Н' %}
+            <a href="{% url 'application_delete' pk=application.id %}" class="btn btn-primary">Удалить заявку</a>
+        {% elif application.status == 'П' %}
+		    <span class="invalid-feedback"><i><strong>*</strong>Вы не можете удалить данную заявку, так как она принята в работу.</i></span>
+        {% elif application.status == 'В' %}
+		    <span class="invalid-feedback"><i><strong>*</strong>Вы не можете удалить данную заявку, так как она выполнена.</i></span>
+        {% endif %}
       <p>-----------------------------------------</p>
     {% endfor %}
 </ul>
