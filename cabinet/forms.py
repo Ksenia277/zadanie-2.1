@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django import forms
 
-from cabinet.models import Application
+from cabinet.models import Application, Category
 
 
 class ConfirmField(forms.Field):
@@ -80,3 +80,9 @@ class ApplicationWorkForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ('comment', )
+
+class CategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = ('title', )

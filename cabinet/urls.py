@@ -22,4 +22,7 @@ urlpatterns = [
         template_name="application_done_change_status.html"), name="application_done_change_status"),
     path('application/work/change/<int:pk>/', ApplicationWorkChangeStatusView.as_view(
         template_name="application_work_change_status.html"), name="application_work_change_status"),
+    path('categories/list/', CategoryListView.as_view(template_name="categories_list.html"), name="categories_list"),
+    path('category/create/', CategoryCreateView.as_view(template_name="category_create.html"), name="create_category"),
+    path('category/delete/<int:pk>/', CategoryDeleteView.as_view(), name="category_delete"),
 ]

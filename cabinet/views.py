@@ -157,3 +157,29 @@ class ApplicationWorkChangeStatusView(TemplateView, LoginRequiredMixin):
 
         return render(request, self.template_name, locals())
 
+class CategoryListView(TemplateView, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        categories = Category.objects.all()
+        context = {'categories': categories}
+        return render(request, self.template_name, context)
+
+class CategoryCreateView(TemplateView, LoginRequiredMixin):
+    form_class = CategoryForm
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(None)
+        return render(request, self.template_name, locals())
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():  # проверяем форму регистрации
+            form.save()
+            return redirect('categories_list')
+
+        return render(request, self.template_name, locals())
+
+class CategoryDeleteView(TemplateView, LoginRequiredMixin):
+    def get(self, request, pk, *args, **kwargs):
+        category = Category.objects.get(id=pk)
+        category.delete()
+        return redirect('categories_list')
