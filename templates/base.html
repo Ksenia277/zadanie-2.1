@@ -16,6 +16,11 @@
           <a href="{% url 'logout' %}" style="font-size: 18px; font-weight: bold; float: right; margin-right: 20px">
              Выход
           </a>
+            {% if user.is_staff %}
+                <a href="{% url 'applications_list' %}" style="font-size: 18px; font-weight: bold; float: right; margin-right: 20px">
+                    Все заявки
+                </a>
+            {% endif %}
            <a href="{% url 'create_application' %}" style="font-size: 18px; font-weight: bold; float: right; margin-right: 20px">
              Создать заявку
           </a>

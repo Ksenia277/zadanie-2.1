@@ -110,3 +110,50 @@ class ApplicationDeleteConfirmView(TemplateView, LoginRequiredMixin):
         application = Application.objects.get(id=pk)
         application.delete()
         return redirect('profile')
+
+class ApplicationListView(TemplateView, LoginRequiredMixin):
+    def get(self, request, *args, **kwargs):
+        applications = Application.objects.filter(status='Н')
+        context = {'applications': applications}
+        return render(request, self.template_name, context)
+
+class ApplicationDoneChangeStatusView(TemplateView, LoginRequiredMixin):
+    form_class = ApplicationDoneForm
+    def get(self, request, pk, *args, **kwargs):
+        form = self.form_class(None)
+        application = Application.objects.get(id=pk)
+        context = {'application': application, 'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk, *args, **kwargs):
+        application = Application.objects.get(id=pk)
+        form = self.form_class(request.POST, request.FILES, instance=application)
+
+        if form.is_valid():  # проверяем форму регистрации
+            instance = form.save(commit=False)
+            instance.status = 'В'
+            instance.save()
+            return redirect('applications_list')
+
+        return render(request, self.template_name, locals())
+
+class ApplicationWorkChangeStatusView(TemplateView, LoginRequiredMixin):
+    form_class = ApplicationWorkForm
+    def get(self, request, pk, *args, **kwargs):
+        form = self.form_class(None)
+        application = Application.objects.get(id=pk)
+        context = {'application': application, 'form': form}
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk, *args, **kwargs):
+        application = Application.objects.get(id=pk)
+        form = self.form_class(request.POST, instance=application)
+
+        if form.is_valid():  # проверяем форму регистрации
+            instance = form.save(commit=False)
+            instance.status = 'П'
+            instance.save()
+            return redirect('applications_list')
+
+        return render(request, self.template_name, locals())
+

@@ -16,4 +16,10 @@ urlpatterns = [
     path('application/delete/confirm/<int:pk>',
          ApplicationDeleteConfirmView.as_view(template_name="application_delete.html"),
          name="application_delete_confirm"),
+    path('applications/list/', ApplicationListView.as_view(template_name="applications_list.html"),
+         name="applications_list"),
+    path('application/done/change/<int:pk>/', ApplicationDoneChangeStatusView.as_view(
+        template_name="application_done_change_status.html"), name="application_done_change_status"),
+    path('application/work/change/<int:pk>/', ApplicationWorkChangeStatusView.as_view(
+        template_name="application_work_change_status.html"), name="application_work_change_status"),
 ]

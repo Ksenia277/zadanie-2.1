@@ -66,3 +66,17 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = ('title', 'description', 'category', 'image', )
+
+class ApplicationDoneForm(forms.ModelForm):
+    image_done = forms.ImageField(label='Созданный дизайн', required=True)
+
+    class Meta:
+        model = Application
+        fields = ('image_done', )
+
+class ApplicationWorkForm(forms.ModelForm):
+    comment = forms.CharField(label='Комментарий', required=True)
+
+    class Meta:
+        model = Application
+        fields = ('comment', )
