@@ -11,8 +11,8 @@ worker_class = 'gevent'
 workers = max_workers()
 
 env = {
-    'DJANGO_SETTINGS_MODULE': 'design.settings'
+    'DJANGO_SETTINGS_MODULE': 'designpro.settings'
 }
 
 reload = True
-name = 'design'
+name = 'project'
